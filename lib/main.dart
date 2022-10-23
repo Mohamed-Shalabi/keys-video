@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:keys/global_key_page.dart';
 import 'package:keys/my_home_page.dart';
 import 'package:keys/my_home_page_with_provider.dart';
-import 'package:keys/pagination_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const PaginationWithKeysApp());
+  runApp(const KeysApp());
 }
 
 class KeysApp extends StatelessWidget {
