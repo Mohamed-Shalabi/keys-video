@@ -50,16 +50,3 @@ class GlobalKeysApp extends StatelessWidget {
     );
   }
 }
-
-class PaginationWithKeysApp extends StatelessWidget {
-  const PaginationWithKeysApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Keys App',
-      theme: ThemeData(primarySwatch: Colors.purple),
-      home: const PaginationHomePage(),
-    );
-  }
-}
