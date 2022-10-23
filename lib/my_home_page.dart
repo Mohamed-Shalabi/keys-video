@@ -8,7 +8,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final list = List.generate(10, (index) => index);
+  final list = List.generate(10, (index) => index + 1);
 
   @override
   Widget build(BuildContext context) {
@@ -16,29 +16,22 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text('Keys App'),
       ),
-      body: ListView.builder(
-        itemCount: list.length,
-        findChildIndexCallback: (key) {
-          if (key is ValueKey<int>) {
-            return list.indexOf(key.value);
-          }
-
-          return null;
-        },
-        itemBuilder: (context, index) {
-          return InkWell(
-            key: ValueKey(list[index]),
-            onTap: () {
-              setState(() {
-                final element = list.removeAt(index);
-                list.insert(index + 1, element);
-              });
-            },
-            child: Tile(
-              element: list[index],
-            ),
-          );
-        },
+      body: ListView(
+        children: [
+          for (var index = 0; index < list.length; index++)
+            InkWell(
+              key: ValueKey(list[index]),
+              onTap: () {
+                setState(() {
+                  final element = list.removeAt(index);
+                  list.insert(index + 1, element);
+                });
+              },
+              child: Tile(
+                element: list[index],
+              ),
+            )
+        ],
       ),
     );
   }

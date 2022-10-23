@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ListProvider with ChangeNotifier {
-  final list = List.generate(10, (index) => index);
+  final list = List.generate(10, (index) => index + 1);
 
   int get length => list.length;
 
@@ -10,8 +10,10 @@ class ListProvider with ChangeNotifier {
 
   int indexOf(int element) => list.indexOf(element);
 
-  void removeElement(int element) {
-    list.remove(element);
+  void swapElement(int element) {
+    final index = list.indexOf(element);
+    list.removeAt(index);
+    list.insert(index + 1, element);
     notifyListeners();
   }
 }
@@ -27,21 +29,14 @@ class MyHomePageWithProvider extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Keys App'),
       ),
-      body: ListView.builder(
-        itemCount: listProvider.length,
-        findChildIndexCallback: (key) {
-          if (key is ValueKey<int>) {
-            return listProvider.indexOf(key.value);
-          }
-
-          return null;
-        },
-        itemBuilder: (context, index) {
-          return Provider.value(
-            value: listProvider.at(index),
-            child: const TileWithProvider(),
-          );
-        },
+      body: ListView(
+        children: [
+          for (var index = 0; index < listProvider.length; index++)
+            Provider.value(
+              value: listProvider.at(index),
+              child: const TileWithProvider(),
+            ),
+        ],
       ),
     );
   }
@@ -59,22 +54,16 @@ class _TileWithProviderState extends State<TileWithProvider> {
   Widget build(BuildContext context) {
     final element = context.watch<int>();
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: InkWell(
-          onTap: () {
-            context.read<ListProvider>().removeElement(element);
-          },
+    return InkWell(
+      onTap: () {
+        context.read<ListProvider>().swapElement(element);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
           child: Text('$element'),
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    print('dispose');
-    super.dispose();
   }
 }
